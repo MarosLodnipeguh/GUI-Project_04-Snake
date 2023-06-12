@@ -4,19 +4,18 @@ import Handlers.MovementListener;
 import Logic.Direction;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 
-public class Graphics extends JFrame implements MovementListener {
+public class MainFrame extends JFrame implements MovementListener {
 
+    private JPanel mainPanel;
     private JScrollPane scrollPane;
     private Table table;
+    private JPanel scorePanel;
     private MovementListener movementListener;
 
-    public Graphics() {
+    public MainFrame () {
         setTitle("Graphics");
 //        setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,13 +68,9 @@ public class Graphics extends JFrame implements MovementListener {
                     case 3 -> table.setValueAt(Color.RED, i, j); //fruit
                 }
 
-
-
-
             }
         }
         refresh();
-//        System.out.println("Graphics refreshed");
     }
 
 

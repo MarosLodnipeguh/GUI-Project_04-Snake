@@ -1,1 +1,22 @@
 double clickiem można edytować tabele, jak to wyłączyć?
+
+wait w Threadzie?
+mainFrame Thread?
+
+kolizja z ciałem nie zawsze dobrze działa
+
+czy wąż powinien znikać gdy wejdzie w ściane?
+
+synchronizacja między threadem grafiki a logiki?
+
+move KeyListener do MainFrame
+
+nazywanie węża w ui i event do tego, co wyśle logice?
+klasa na scoreboard?
+
+ui:
+play button
+restart button
+score counter
+tick slider?
+game over screen

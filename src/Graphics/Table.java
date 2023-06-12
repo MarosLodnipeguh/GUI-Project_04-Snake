@@ -26,8 +26,8 @@ class Table extends JTable {
         setRowHeight(20);
         for (int i = 0; i < columnCount; i++) {
             getColumnModel().getColumn(i).setPreferredWidth(20);
-            getColumnModel().getColumn(i).setMinWidth(20); // Ustawić minimalną szerokość kolumny na 10 pikseli
-            getColumnModel().getColumn(i).setMaxWidth(20); // Ustawić maksymalną szerokość kolumny na 10 pikseli
+            getColumnModel().getColumn(i).setMinWidth(20);
+            getColumnModel().getColumn(i).setMaxWidth(20);
         }
 
         setAutoResizeMode(AUTO_RESIZE_OFF);

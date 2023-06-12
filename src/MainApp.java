@@ -1,5 +1,5 @@
 import Logic.Logic;
-import Graphics.Graphics;
+import Graphics.MainFrame;
 import Logic.Direction;
 
 import javax.swing.*;
@@ -16,14 +16,14 @@ public class MainApp {
 
         SwingUtilities.invokeLater(() -> {
 
-            Logic logic = new Logic(1, new int[25][16]); // tick 1 = 1 refresh per second
+            Logic logic = new Logic(5, new int[25][16]); // tick 1 = 1 refresh per second
 
-            Graphics graphics = new Graphics();
+            MainFrame mainFrame = new MainFrame();
 
-            graphics.setMovementListener(logic);
-            logic.setMovementListener(graphics);
+            mainFrame.setMovementListener(logic);
+            logic.setMovementListener(mainFrame);
 
-            graphics.addKeyListener(new KeyAdapter() {
+            mainFrame.addKeyListener(new KeyAdapter() {
                 @Override
                 public void keyPressed (KeyEvent e) {
 

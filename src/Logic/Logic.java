@@ -54,7 +54,7 @@ public class Logic extends Thread implements MovementListener {
 
             checkEat();
 
-            fillGraphics(board);
+//            fillGraphics(board);
 
             try {
                 move();
@@ -70,8 +70,7 @@ public class Logic extends Thread implements MovementListener {
 
 
             try {
-//                Thread.sleep(tick);
-                Thread.sleep(300);
+                Thread.sleep(1000/tick); // tick = refresh per second
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -140,10 +139,11 @@ public class Logic extends Thread implements MovementListener {
         }
     }
 
+
     private void checkCollision() {
 
         for (int i = bodyParts; i > 0; i--) {
-            if ((i > 4) && (x[0] == x[i]) && (y[0] == y[i])) {
+            if ((i > 3) && (x[0] == x[i]) && (y[0] == y[i])) {
                 System.out.println("COLLISION");
                 running = false;
             }
