@@ -32,8 +32,6 @@ public class UserPanel extends JPanel implements EventListener {
         // ===================================== SLIDER ===================================== //
         tickLabel = new JLabel("Ticks per second: ");
 
-        //Slider w ms będzie 100ms = 0.1s, 10000ms = 10s
-
         tickSlider = new JSlider(1, 30, 5);
         tickSlider.setMajorTickSpacing(10); // Ustawienie większych kroków
         tickSlider.setMinorTickSpacing(1); // Ustawienie mniejszych kroków

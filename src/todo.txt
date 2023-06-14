@@ -31,9 +31,20 @@ wcisniecie strzalek rozpoczyna nową grę też
 
 grafika jako oddzielny thread i synchronizacja movementu miedzy threadami???
 
+co sie zmienilo ze jak odpalam thread to nie dziala keyListener???
+dodałem kolejny panel, a keyListener ciagle jest na MainFrame
+
+sprobowac przeniesc z powrotem keyListener do MainApp
+
+wysylam requesty do managera a nie bezposrednio do Game i to może być problem?
+
+podwojny listener?
+ustawiam to tak ze i sam game manager ustawia game.setDirection i jeszcze samo game ma listenera!!
+wywalić to
+
+sama klasa game nie powinna mieć żadnego doczynienia z grafiką, tylko manager będzie miał. zrobić tak
 
 
-
-DONEL
+DONE:
 wymiary planszy jako zmienna globalna, wszystko uzaleznione od niej, definiowana w MainApp
 zmiana direction za pomocą listenera

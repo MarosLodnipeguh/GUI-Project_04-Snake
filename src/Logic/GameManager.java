@@ -10,8 +10,8 @@ public class GameManager implements EventListener, MovementListener {
     private EventListener logicEventListener;
     private EventListener graphicsEventListener;
 
-    private MovementListener logicMovementListener;
-    private MovementListener graphicsMovementListener;
+    private MovementListener fromLogicMovementListener;
+    private MovementListener fromGraphicsMovementListener;
 
 
     @Override
@@ -20,7 +20,8 @@ public class GameManager implements EventListener, MovementListener {
         if (game == null) {
 
             game = new Game(evt.getTick(), evt.getBoardWidth(), evt.getBoardHeight());
-            game.setMovementListener(graphicsMovementListener);
+            game.setMovementListener(fromGraphicsMovementListener);
+            System.out.println("Game is now a listener of: " + fromGraphicsMovementListener.getClass());
 
 
             Thread gameThread = new Thread(game);
@@ -61,6 +62,7 @@ public class GameManager implements EventListener, MovementListener {
     @Override
     public void setDirection (Direction direction) {
         game.setDirection(direction);
+        System.out.println("Direction set to: " + direction);
     }
 
     @Override
@@ -76,11 +78,11 @@ public class GameManager implements EventListener, MovementListener {
         this.graphicsEventListener = graphicsEventListener;
     }
 
-    public void setLogicMovementListener (MovementListener logicMovementListener) {
-        this.logicMovementListener = logicMovementListener;
+    public void setFromLogicMovementListener(MovementListener fromLogicMovementListener) {
+        this.fromLogicMovementListener = fromLogicMovementListener;
     }
 
-    public void setGraphicsMovementListener (MovementListener graphicsMovementListener) {
-        this.graphicsMovementListener = graphicsMovementListener;
+    public void setFromGraphicsMovementListener(MovementListener fromGraphicsMovementListener) {
+        this.fromGraphicsMovementListener = fromGraphicsMovementListener;
     }
 }

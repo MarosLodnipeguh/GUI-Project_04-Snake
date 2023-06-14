@@ -220,8 +220,8 @@ public class Game extends Thread implements MovementListener, EventListener {
 
     @Override
     public void startGame (StartGameEvent evt) {
-        Thread logicThread = new Thread(this);
-        logicThread.start();
+//        Thread logicThread = new Thread(this);
+//        logicThread.start();
     }
 
     @Override
