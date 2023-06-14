@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.EventObject;
 
 class Table extends JTable {
+
     private int rowCount;
     private int columnCount;
 
@@ -20,8 +21,6 @@ class Table extends JTable {
 
         setDefaultRenderer(Object.class, new CustomTableCellRenderer());
         setCellEditor(new NonEditableTableCellEditor());
-
-
 
         setRowHeight(20);
         for (int i = 0; i < columnCount; i++) {
@@ -46,8 +45,6 @@ class Table extends JTable {
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
             Component component = super.getTableCellRendererComponent(table, value, false, false, row, column);
-
-
 
             if (value == null) {
                 setBackground(Color.WHITE);

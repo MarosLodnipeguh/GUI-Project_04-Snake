@@ -1,10 +1,10 @@
 package Handlers;
 
-import Logic.Direction;
+import Enums.Direction;
 
 public interface MovementListener {
 
-    void setDirection(Direction direction);
+    void setDirection(Direction direction); // Graphics -> Logic
 
-    void fillGraphics (int[][] board);
+    void fillGraphics (int[][] board);      // Logic -> Graphics
 }

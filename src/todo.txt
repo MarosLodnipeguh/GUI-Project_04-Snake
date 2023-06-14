@@ -20,3 +20,20 @@ restart button
 score counter
 tick slider?
 game over screen
+
+
+czy da sie odpalic logike bez grafiki i na odwrót?
+
+
+
+wcisniecie strzalek rozpoczyna nową grę też
+
+
+grafika jako oddzielny thread i synchronizacja movementu miedzy threadami???
+
+
+
+
+DONEL
+wymiary planszy jako zmienna globalna, wszystko uzaleznione od niej, definiowana w MainApp
+zmiana direction za pomocą listenera

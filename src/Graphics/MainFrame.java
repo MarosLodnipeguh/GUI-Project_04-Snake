@@ -1,59 +1,44 @@
 package Graphics;
 
+import Handlers.EventListener;
 import Handlers.MovementListener;
-import Logic.Direction;
+import Enums.Direction;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
-public class MainFrame extends JFrame implements MovementListener {
+public class MainFrame extends JFrame implements KeyListener, MovementListener {
 
     private JPanel mainPanel;
     private JScrollPane scrollPane;
     private Table table;
-    private JPanel scorePanel;
-    private MovementListener movementListener;
+    private UserPanel userPanel;
 
-    public MainFrame () {
+    private MovementListener movementListener;
+    private EventListener eventListener;
+
+    public MainFrame (int boardWidth, int boardHeight) {
         setTitle("Graphics");
 //        setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         setFocusable(true);
 
-
-
-        table = new Table(25, 16);
+        table = new Table(boardHeight, boardWidth);
         scrollPane = new JScrollPane(table);
-        this.getContentPane().add(scrollPane);
+        this.getContentPane().add(scrollPane, BorderLayout.NORTH);
 
-        table.setValueAt(Color.GREEN, 0, 3);
+        userPanel = new UserPanel();
 
+        this.getContentPane().add(userPanel, BorderLayout.SOUTH);
 
-//        JPanel panel = new JPanel();
-//        panel.setLayout(null);
-//
-//
-//        DefaultTableModel model = new DefaultTableModel(10, 10);
-//
-//        JTable table = new Table2(model);
-//        JScrollPane scrollPane = new JScrollPane(table);
-//        this.getContentPane().add(scrollPane);
-
-//        scrollPane.setBounds(10, 10, cellSize * 10, cellSize * 10); // Ustawienie wymiarów JScrollPane na podstawie rozmiaru komórek
-//        panel.add(scrollPane);
-
-//        add(panel);
-//        setSize(cellSize * 10 + 40, cellSize * 10 + 60);
+        addKeyListener(this);
 
         pack();
         setVisible(true);
 
-    }
-
-    public void refresh() {
-        repaint();
     }
 
     @Override
@@ -70,13 +55,8 @@ public class MainFrame extends JFrame implements MovementListener {
 
             }
         }
-        refresh();
+        repaint();
     }
-
-
-
-
-
 
     @Override
     public void setDirection (Direction direction) {
@@ -85,6 +65,43 @@ public class MainFrame extends JFrame implements MovementListener {
 
     public void setMovementListener (MovementListener movementListener) {
         this.movementListener = movementListener;
+    }
+
+    public void setEventListener (EventListener eventListener) {
+        this.eventListener = eventListener;
+    }
+
+    public void setUserPanelListener (EventListener eventListener) {
+        this.userPanel.setLogicListener(eventListener);
+    }
+
+    @Override
+    public void keyPressed (KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP -> {
+                movementListener.setDirection(Direction.UP);
+                System.out.println("UP");
+            }
+            case KeyEvent.VK_DOWN -> {
+                movementListener.setDirection(Direction.DOWN);
+            }
+            case KeyEvent.VK_LEFT -> {
+                movementListener.setDirection(Direction.LEFT);
+            }
+            case KeyEvent.VK_RIGHT -> {
+                movementListener.setDirection(Direction.RIGHT);
+            }
+        }
+    }
+
+    @Override
+    public void keyTyped (KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased (KeyEvent e) {
+
     }
 
 

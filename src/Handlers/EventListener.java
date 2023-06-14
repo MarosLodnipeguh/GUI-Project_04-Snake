@@ -2,7 +2,8 @@ package Handlers;
 
 public interface EventListener {
 
-    void startGame(StartGameEvent evt);     // Graphics -> Logic (w logic to będzie tworzyło new Thread(logic))
+    void startGame(StartGameEvent evt);     // Graphics -> GameManager
+    EventListener newGame(EventListener graphics);                // Graphics -> Logic
 
     void updateScore(ConsumptionEvent evt); // Logic -> Graphics
 

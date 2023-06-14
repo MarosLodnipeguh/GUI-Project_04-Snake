@@ -1,12 +1,15 @@
-import Logic.Logic;
+import Logic.Game;
 import Graphics.MainFrame;
-import Logic.Direction;
+import Logic.GameManager;
 
 import javax.swing.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class MainApp {
+
+    private static int tick = 5; //tps (refresh per second)
+    private static int boardWidth = 25;
+    private static int boardHeight = 16;
+
     public static void main (String[] args) {
 
 
@@ -16,40 +19,26 @@ public class MainApp {
 
         SwingUtilities.invokeLater(() -> {
 
-            Logic logic = new Logic(5, new int[25][16]); // tick 1 = 1 refresh per second
 
-            MainFrame mainFrame = new MainFrame();
+//            Game game = new Game(tick, boardWidth, boardHeight);
 
-            mainFrame.setMovementListener(logic);
-            logic.setMovementListener(mainFrame);
+            GameManager manager = new GameManager();
 
-            mainFrame.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyPressed (KeyEvent e) {
+            MainFrame graphics = new MainFrame(boardWidth, boardHeight);
 
-                    switch (e.getKeyCode()) {
-                        case KeyEvent.VK_UP -> {
-                            logic.setDirection(Direction.UP);
-//                            System.out.println("UP");
-                        }
-                        case KeyEvent.VK_DOWN -> {
-                            logic.setDirection(Direction.DOWN);
-//                            System.out.println("DOWN");
-                        }
-                        case KeyEvent.VK_LEFT -> {
-                            logic.setDirection(Direction.LEFT);
-//                            System.out.println("LEFT");
-                        }
-                        case KeyEvent.VK_RIGHT -> {
-                            logic.setDirection(Direction.RIGHT);
-//                            System.out.println("RIGHT");
-                        }
-                    }
-                }
-            });
+            graphics.setMovementListener(manager);
+            graphics.setEventListener(manager);
 
-            Thread logicThread = new Thread(logic);
-            logicThread.start();
+            graphics.setUserPanelListener(manager);
+
+            manager.setGraphicsMovementListener(graphics);
+            manager.setLogicMovementListener(graphics);
+//            manager.setGraphicsEventListener(graphics);
+
+
+
+//            Thread logicThread = new Thread(logic);
+//            logicThread.start();
 
 
         });

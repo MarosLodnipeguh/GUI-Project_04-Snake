@@ -1,16 +1,10 @@
 package Logic;
 
-import Handlers.MovementListener;
-
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.Arrays;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
+import Enums.Direction;
+import Handlers.*;
 
 
-public class Logic extends Thread implements MovementListener {
+public class Game extends Thread implements MovementListener, EventListener {
 
     private int tick;
     private int[][] board;
@@ -19,12 +13,14 @@ public class Logic extends Thread implements MovementListener {
     private Direction direction;
     private int bodyParts;
 
+    private String snakeName;
+
 
     private MovementListener movementListener;
 
-    public Logic (int tick, int[][] board) {
+    public Game (int tick, int boardWidth, int boardHeight) {
         this.tick = tick;
-        this.board = board;
+        this.board = new int[boardHeight][boardWidth];
 
         running = true;
         direction = Direction.DOWN;
@@ -34,12 +30,7 @@ public class Logic extends Thread implements MovementListener {
         generateFood();
 
 //        bodyParts++;
-//        bodyParts++;
-//        bodyParts++;
 
-
-//        addKeyListener(this);
-//        Graphics.addKeyListener(this);
     }
 
     // 1 - snake head
@@ -47,7 +38,7 @@ public class Logic extends Thread implements MovementListener {
     // 3 - food
 
     public void run() {
-        System.out.println("Logic thread started");
+        System.out.println("Game thread started");
 
 
         while (running) {
@@ -77,6 +68,7 @@ public class Logic extends Thread implements MovementListener {
 
 
         }
+        System.out.println("Game thread stopped");
     }
 
     private final int x[] = new int[400];
@@ -226,4 +218,38 @@ public class Logic extends Thread implements MovementListener {
     }
 
 
+    @Override
+    public void startGame (StartGameEvent evt) {
+        Thread logicThread = new Thread(this);
+        logicThread.start();
+    }
+
+    @Override
+    public EventListener newGame (EventListener graphics) {
+        return null;
+    }
+
+    @Override
+    public void updateScore (ConsumptionEvent evt) {
+
+    }
+
+    @Override
+    public void changeTick (TickEvent evt) {
+
+    }
+
+    @Override
+    public void gameOver (ImpactEvent evt) {
+
+    }
+
+    @Override
+    public void gameWon () {
+
+    }
+
+    public void setRunning (boolean running) {
+        this.running = running;
+    }
 }
