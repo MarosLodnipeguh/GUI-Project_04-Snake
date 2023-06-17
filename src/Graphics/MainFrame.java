@@ -6,11 +6,9 @@ import Enums.Direction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 
-public class MainFrame extends JFrame implements KeyListener, MovementListener {
+public class MainFrame extends JFrame implements /*KeyListener,*/ MovementListener {
 
     private JPanel mainPanel;
     private JScrollPane scrollPane;
@@ -34,14 +32,14 @@ public class MainFrame extends JFrame implements KeyListener, MovementListener {
 
         this.getContentPane().add(userPanel, BorderLayout.SOUTH);
 
-        addKeyListener(this);
+//        addKeyListener(this);
 
-        userPanel.setFocusable(false);
-        scrollPane.setFocusable(false);
-        table.setFocusable(false);
+//        userPanel.setFocusable(false);
+//        scrollPane.setFocusable(false);
+//        table.setFocusable(false);
 
-        if (scrollPane.isFocusOwner()) System.out.println("scrollPane is focus owner");
-        System.out.println("scrollPane focusable: " + scrollPane.isFocusable());
+//        requestFocus();
+
 
         pack();
         setVisible(true);
@@ -50,6 +48,8 @@ public class MainFrame extends JFrame implements KeyListener, MovementListener {
 
     @Override
     public void fillGraphics (int[][] board) {
+        requestFocus();
+
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
 
@@ -72,7 +72,7 @@ public class MainFrame extends JFrame implements KeyListener, MovementListener {
 
     public void setMovementListener (MovementListener movementListener) {
         this.movementListener = movementListener;
-        System.out.println("MainFrame MovementListener set to: " + movementListener.getClass());
+//        System.out.println("MainFrame MovementListener set to: " + movementListener.getClass());
     }
 
     public void setEventListener (EventListener eventListener) {
@@ -80,40 +80,43 @@ public class MainFrame extends JFrame implements KeyListener, MovementListener {
     }
 
     public void setUserPanelListener (EventListener eventListener) {
-        this.userPanel.setLogicListener(eventListener);
+        this.userPanel.setFromGraphicsListener(eventListener);
     }
 
-    @Override
-    public void keyPressed (KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP -> {
-                System.out.println("UP");
-                movementListener.setDirection(Direction.UP); // -> GameManager
-            }
-            case KeyEvent.VK_DOWN -> {
-                System.out.println("DOWN");
-                movementListener.setDirection(Direction.DOWN);
-            }
-            case KeyEvent.VK_LEFT -> {
-                System.out.println("LEFT");
-                movementListener.setDirection(Direction.LEFT);
-            }
-            case KeyEvent.VK_RIGHT -> {
-                System.out.println("RIGHT");
-                movementListener.setDirection(Direction.RIGHT);
-            }
-        }
+//    @Override
+//    public void keyPressed (KeyEvent e) {
+//        switch (e.getKeyCode()) {
+//            case KeyEvent.VK_UP -> {
+//                System.out.println("UP");
+//                movementListener.setDirection(Direction.UP); // -> GameManager
+//            }
+//            case KeyEvent.VK_DOWN -> {
+//                System.out.println("DOWN");
+//                movementListener.setDirection(Direction.DOWN);
+//            }
+//            case KeyEvent.VK_LEFT -> {
+//                System.out.println("LEFT");
+//                movementListener.setDirection(Direction.LEFT);
+//            }
+//            case KeyEvent.VK_RIGHT -> {
+//                System.out.println("RIGHT");
+//                movementListener.setDirection(Direction.RIGHT);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void keyTyped (KeyEvent e) {
+//
+//    }
+//
+//    @Override
+//    public void keyReleased (KeyEvent e) {
+//
+//    }
+
+
+    public UserPanel getUserPanel () {
+        return userPanel;
     }
-
-    @Override
-    public void keyTyped (KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased (KeyEvent e) {
-
-    }
-
-
 }

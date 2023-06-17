@@ -14,4 +14,7 @@ public class TickEvent extends EventObject {
         System.out.println("Tick changed to: " + tick);
     }
 
+    public int getTick () {
+        return tick;
+    }
 }

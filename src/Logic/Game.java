@@ -4,32 +4,37 @@ import Enums.Direction;
 import Handlers.*;
 
 
-public class Game extends Thread implements MovementListener, EventListener {
+public class Game extends Thread {
 
     private int tick;
     private int[][] board;
     private volatile boolean running;
-
     private Direction direction;
     private int bodyParts;
-
     private String snakeName;
+    private final int[] x;
+    private final int[] y;
+    private int foodX;
+    private int foodY;
+
+    private GameManager manager;
 
 
-    private MovementListener movementListener;
-
-    public Game (int tick, int boardWidth, int boardHeight) {
+    public Game (GameManager manager, int tick, int boardWidth, int boardHeight) {
         this.tick = tick;
+        this.x = new int[boardWidth * boardHeight];
+        this.y = new int[boardWidth * boardHeight];
         this.board = new int[boardHeight][boardWidth];
 
-        running = true;
+        this.manager = manager;
+
         direction = Direction.DOWN;
         bodyParts = 0;
 
         generateHead();
         generateFood();
 
-//        bodyParts++;
+        running = true;
 
     }
 
@@ -49,10 +54,9 @@ public class Game extends Thread implements MovementListener, EventListener {
 
             try {
                 move();
-                checkCollision();
+                checkBodyCollision();
             } catch (ArrayIndexOutOfBoundsException e) {
-                running = false;
-                System.out.println("GAME OVER");
+                manager.gameOver(new ImpactEvent(this, x[0], y[0]));
             }
 
 
@@ -71,8 +75,7 @@ public class Game extends Thread implements MovementListener, EventListener {
         System.out.println("Game thread stopped");
     }
 
-    private final int x[] = new int[400];
-    private final int y[] = new int[400];
+
 
 
     private void move() {
@@ -86,22 +89,22 @@ public class Game extends Thread implements MovementListener, EventListener {
 
             case UP -> {
                 y[0]--;
-                checkCollision();
+                checkBodyCollision();
             }
 
             case DOWN -> {
                 y[0]++;
-                checkCollision();
+                checkBodyCollision();
             }
 
             case LEFT -> {
                 x[0]--;
-                checkCollision();
+                checkBodyCollision();
             }
 
             case RIGHT -> {
                 x[0]++;
-                checkCollision();
+                checkBodyCollision();
             }
         }
 
@@ -126,18 +129,17 @@ public class Game extends Thread implements MovementListener, EventListener {
         if (x[0] == foodY && y[0] == foodX) {
             System.out.println("EAT");
             bodyParts++;
-            System.out.println("Points: " + bodyParts);
+            manager.updateScore(new ConsumptionEvent(this, bodyParts));
             generateFood();
         }
     }
 
 
-    private void checkCollision() {
+    private void checkBodyCollision () {
 
         for (int i = bodyParts; i > 0; i--) {
             if ((i > 3) && (x[0] == x[i]) && (y[0] == y[i])) {
-                System.out.println("COLLISION");
-                running = false;
+                manager.gameOver(new ImpactEvent(this, x[0], y[0]));
             }
         }
 
@@ -161,7 +163,6 @@ public class Game extends Thread implements MovementListener, EventListener {
 
     }
 
-    @Override
     public void setDirection (Direction direction) {
         if (this.direction == Direction.UP && direction == Direction.DOWN) {
             return;
@@ -178,24 +179,18 @@ public class Game extends Thread implements MovementListener, EventListener {
         this.direction = direction;
     }
 
-    @Override
+
     public void fillGraphics (int[][] board) {
-        movementListener.fillGraphics(board);
+        manager.fillGraphics(board);
     }
 
 
     public void generateHead() {
-
-        int randomRow = (int) (Math.random() * board.length);
-        int randomCol = (int) (Math.random() * board[0].length);
-
-        x[0] = 8;
-        y[0] = 8;
-
+        x[0] = 0;
+        y[0] = 0;
     }
 
-    private int foodX;
-    private int foodY;
+
     public void generateFood() {
 
         int randomX = (int) (Math.random() * board.length);
@@ -212,44 +207,13 @@ public class Game extends Thread implements MovementListener, EventListener {
 
     }
 
-
-    public void setMovementListener (MovementListener movementListener) {
-        this.movementListener = movementListener;
-    }
-
-
-    @Override
-    public void startGame (StartGameEvent evt) {
-//        Thread logicThread = new Thread(this);
-//        logicThread.start();
-    }
-
-    @Override
-    public EventListener newGame (EventListener graphics) {
-        return null;
-    }
-
-    @Override
-    public void updateScore (ConsumptionEvent evt) {
-
-    }
-
-    @Override
-    public void changeTick (TickEvent evt) {
-
-    }
-
-    @Override
-    public void gameOver (ImpactEvent evt) {
-
-    }
-
-    @Override
-    public void gameWon () {
-
-    }
-
     public void setRunning (boolean running) {
         this.running = running;
     }
+
+    public void setTick (int tick) {
+        this.tick = tick;
+    }
+
+
 }

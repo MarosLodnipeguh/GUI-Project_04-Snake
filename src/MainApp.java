@@ -28,40 +28,49 @@ public class MainApp {
 
             MainFrame graphics = new MainFrame(boardWidth, boardHeight);
 
-            graphics.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyPressed (KeyEvent e) {
 
-                    switch (e.getKeyCode()) {
-                        case KeyEvent.VK_UP -> {
-                            manager.setDirection(Direction.UP);
-//                            System.out.println("UP");
-                        }
-                        case KeyEvent.VK_DOWN -> {
-                            manager.setDirection(Direction.DOWN);
-//                            System.out.println("DOWN");
-                        }
-                        case KeyEvent.VK_LEFT -> {
-                            manager.setDirection(Direction.LEFT);
-//                            System.out.println("LEFT");
-                        }
-                        case KeyEvent.VK_RIGHT -> {
-                            manager.setDirection(Direction.RIGHT);
-//                            System.out.println("RIGHT");
-                        }
-                    }
-                }
-            });
 
 
 
             graphics.setMovementListener(manager);
             graphics.setEventListener(manager);
 
-            graphics.setUserPanelListener(manager);
+//            graphics.setUserPanelListener(manager);
+            graphics.getUserPanel().setFromGraphicsListener(manager);
+
+            manager.setFromGraphicsEventListener(graphics.getUserPanel());
+
+            manager.setFromLogicEventListener(graphics.getUserPanel());
 
             manager.setFromGraphicsMovementListener(graphics);
             manager.setFromLogicMovementListener(graphics);
+
+            graphics.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed (KeyEvent e) {
+
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_UP -> {
+                            System.out.println("UP");
+                            manager.setDirection(Direction.UP);
+                        }
+                        case KeyEvent.VK_DOWN -> {
+                            System.out.println("DOWN");
+                            manager.setDirection(Direction.DOWN);
+                        }
+                        case KeyEvent.VK_LEFT -> {
+                            System.out.println("LEFT");
+                            manager.setDirection(Direction.LEFT);
+                        }
+                        case KeyEvent.VK_RIGHT -> {
+                            System.out.println("RIGHT");
+                            manager.setDirection(Direction.RIGHT);
+                        }
+                    }
+                }
+            });
+
+
 //            manager.setGraphicsEventListener(graphics);
 
 

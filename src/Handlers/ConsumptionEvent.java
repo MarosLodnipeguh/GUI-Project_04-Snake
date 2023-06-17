@@ -10,8 +10,8 @@ public class ConsumptionEvent extends EventObject {
         this.score = score;
     }
 
+    public int getScore () {
+        return score;
+    }
 
-    //pożywienie zjedzone - wygeneruj nowe na losowej pozycji, innej niż poprzednia
-
-    //pożywienie zjedzone - zwiększ licznik punktów
 }

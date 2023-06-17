@@ -7,45 +7,44 @@ public class GameManager implements EventListener, MovementListener {
 
     private Game game;
 
-    private EventListener logicEventListener;
-    private EventListener graphicsEventListener;
+    private EventListener fromLogicEventListener;
+    private EventListener fromGraphicsEventListener;
 
-    private MovementListener fromLogicMovementListener;
-    private MovementListener fromGraphicsMovementListener;
+    private MovementListener fromLogicMovementListener; // (słuchaczem jest MainFrame)
+    private MovementListener fromGraphicsMovementListener; // (słuchaczem jest Manager)
 
 
     @Override
-    public void startGame (StartGameEvent evt) {
+    public void startGame (NewGameEvent evt) {
 
-        if (game == null) {
+        this.game = new Game(this, evt.getTick(), evt.getBoardWidth(), evt.getBoardHeight());
+        Thread gameThread = new Thread(game, "GameThread");
+        gameThread.start();
 
-            game = new Game(evt.getTick(), evt.getBoardWidth(), evt.getBoardHeight());
-            game.setMovementListener(fromGraphicsMovementListener);
-            System.out.println("Game is now a listener of: " + fromGraphicsMovementListener.getClass());
-
-
-            Thread gameThread = new Thread(game);
-            gameThread.start();
-
-        }
-        else {
-            gameOver(null);
-        }
-    }
-
-    @Override
-    public EventListener newGame (EventListener graphics) {
-        return null;
+//        if (game == null) {
+//
+//            this.game = new Game(this, evt.getTick(), evt.getBoardWidth(), evt.getBoardHeight());
+////            game.setMovementListener(fromGraphicsMovementListener);
+////            System.out.println("Game is now a listener of: " + fromGraphicsMovementListener.getClass());
+//
+//
+//            Thread gameThread = new Thread(game, "GameThread");
+//            gameThread.start();
+//
+//        }
+//        else {
+//            gameOver(null);
+//        }
     }
 
     @Override
     public void updateScore (ConsumptionEvent evt) {
-
+        fromLogicEventListener.updateScore(evt);
     }
 
     @Override
     public void changeTick (TickEvent evt) {
-
+        game.setTick(evt.getTick());
     }
 
     @Override
@@ -55,27 +54,30 @@ public class GameManager implements EventListener, MovementListener {
     }
 
     @Override
-    public void gameWon () {
+    public void startGameNoButton () {
 
     }
 
     @Override
     public void setDirection (Direction direction) {
+        if (game == null) {
+            fromLogicEventListener.startGameNoButton();
+        }
         game.setDirection(direction);
         System.out.println("Direction set to: " + direction);
     }
 
     @Override
     public void fillGraphics (int[][] board) {
-
+        fromLogicMovementListener.fillGraphics(board);
     }
 
-    public void setLogicEventListener (EventListener logicEventListener) {
-        this.logicEventListener = logicEventListener;
+    public void setFromLogicEventListener (EventListener fromLogicEventListener) {
+        this.fromLogicEventListener = fromLogicEventListener;
     }
 
-    public void setGraphicsEventListener (EventListener graphicsEventListener) {
-        this.graphicsEventListener = graphicsEventListener;
+    public void setFromGraphicsEventListener (EventListener fromGraphicsEventListener) {
+        this.fromGraphicsEventListener = fromGraphicsEventListener;
     }
 
     public void setFromLogicMovementListener(MovementListener fromLogicMovementListener) {
@@ -84,5 +86,15 @@ public class GameManager implements EventListener, MovementListener {
 
     public void setFromGraphicsMovementListener(MovementListener fromGraphicsMovementListener) {
         this.fromGraphicsMovementListener = fromGraphicsMovementListener;
+    }
+
+    @Override
+    public boolean getGameState () {
+        if (game == null) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }

@@ -2,7 +2,7 @@ package Handlers;
 
 import java.util.EventObject;
 
-public class StartGameEvent extends EventObject {
+public class NewGameEvent extends EventObject {
 
     // po wciśnięciu przycisku start w ui
 
@@ -12,7 +12,7 @@ public class StartGameEvent extends EventObject {
     private int boardWidth;
     private int boardHeight;
 
-    public StartGameEvent (Object source, String playerName, int tick, int boardWidth, int boardHeight) {
+    public NewGameEvent (Object source, String playerName, int tick, int boardWidth, int boardHeight) {
         super(source);
         this.playerName = playerName;
         this.tick = tick;
