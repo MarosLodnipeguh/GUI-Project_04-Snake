@@ -3,6 +3,9 @@ package Logic;
 import Enums.Direction;
 import Handlers.*;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 
 public class Game extends Thread {
 
@@ -14,25 +17,31 @@ public class Game extends Thread {
     private String snakeName;
     private final int[] x;
     private final int[] y;
-    private int foodX;
-    private int foodY;
+    private ArrayList<Dimension> foodPositions = new ArrayList<>();
 
     private GameManager manager;
 
 
-    public Game (GameManager manager, int tick, int boardWidth, int boardHeight) {
+    public Game (GameManager manager, String snakeName, int tick, int boardWidth, int boardHeight) {
         this.tick = tick;
         this.x = new int[boardWidth * boardHeight];
         this.y = new int[boardWidth * boardHeight];
         this.board = new int[boardHeight][boardWidth];
 
         this.manager = manager;
+        this.snakeName = snakeName;
 
         direction = Direction.DOWN;
         bodyParts = 0;
 
         generateHead();
+
         generateFood();
+        generateFood();
+        generateFood();
+//        generateFood();
+//        generateFood();
+//        generateFood();
 
         running = true;
 
@@ -50,26 +59,20 @@ public class Game extends Thread {
 
             checkEat();
 
-//            fillGraphics(board);
-
             try {
                 move();
-                checkBodyCollision();
+                checkEat();
             } catch (ArrayIndexOutOfBoundsException e) {
-                manager.gameOver(new ImpactEvent(this, x[0], y[0]));
+                manager.gameOver(new ImpactEvent(this, x[0], y[0], snakeName, bodyParts+1));
             }
 
-
             fillGraphics(board);
-
-
 
             try {
                 Thread.sleep(1000/tick); // tick = refresh per second
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
 
         }
         System.out.println("Game thread stopped");
@@ -126,12 +129,25 @@ public class Game extends Thread {
     }
 
     private void checkEat() {
-        if (x[0] == foodY && y[0] == foodX) {
-            System.out.println("EAT");
-            bodyParts++;
-            manager.updateScore(new ConsumptionEvent(this, bodyParts));
-            generateFood();
+
+        for (int i = 0; i < foodPositions.size(); i++) {
+            if (x[0] == foodPositions.get(i).height && y[0] == foodPositions.get(i).width) {
+                bodyParts++;
+                manager.updateScore(new ConsumptionEvent(this, bodyParts));
+                foodPositions.remove(i);
+                generateFood();
+            }
         }
+
+//        if (x[0] == foodY && y[0] == foodX) {
+//            System.out.println("EAT");
+//            bodyParts++;
+//            manager.updateScore(new ConsumptionEvent(this, bodyParts));
+//            generateFood();
+//            generateFood();
+//            generateFood();
+//        }
+
     }
 
 
@@ -139,7 +155,7 @@ public class Game extends Thread {
 
         for (int i = bodyParts; i > 0; i--) {
             if ((i > 3) && (x[0] == x[i]) && (y[0] == y[i])) {
-                manager.gameOver(new ImpactEvent(this, x[0], y[0]));
+                manager.gameOver(new ImpactEvent(this, x[0], y[0], snakeName, bodyParts+1));
             }
         }
 
@@ -184,12 +200,10 @@ public class Game extends Thread {
         manager.fillGraphics(board);
     }
 
-
     public void generateHead() {
         x[0] = 0;
         y[0] = 0;
     }
-
 
     public void generateFood() {
 
@@ -198,13 +212,15 @@ public class Game extends Thread {
 
         if (board[randomX][randomY] == 0) {
             board[randomX][randomY] = 3;
-            foodX = randomX;
-            foodY = randomY;
-            System.out.println("Food generated at: " + randomX + " " + randomY);
+            foodPositions.add(new Dimension(randomX, randomY));
         } else {
             generateFood();
         }
 
+    }
+
+    public void forceGameOver () {
+        manager.gameOver(new ImpactEvent(this, x[0], y[0], snakeName, bodyParts+1));
     }
 
     public void setRunning (boolean running) {

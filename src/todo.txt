@@ -1,38 +1,35 @@
 double clickiem można edytować tabele, jak to wyłączyć?
 
 wait w Threadzie?
-mainFrame Thread?
 
 kolizja z ciałem nie zawsze dobrze działa
 
 czy wąż powinien znikać gdy wejdzie w ściane?
 
-synchronizacja między threadem grafiki a logiki?
-
-move KeyListener do MainFrame
-
-nazywanie węża w ui i event do tego, co wyśle logice?
-klasa na scoreboard?
-
-ui:
-play button
-restart button
-score counter
-tick slider?
-game over screen
-
-
 czy da sie odpalic logike bez grafiki i na odwrót?
 
+move KeyListener do MainFrame?
+
+SCOREBOARD + PLIK
+
+UI: game over screen
 
 
-wcisniecie strzalek rozpoczyna nową grę też
+
+
+przy uderzeniu w sciane od razu pokazuje sie okienko setName
 
 
 
-sama klasa game nie powinna mieć żadnego doczynienia z grafiką, tylko manager będzie miał. zrobić tak
+
+
 
 
 DONE:
 wymiary planszy jako zmienna globalna, wszystko uzaleznione od niej, definiowana w MainApp
 zmiana direction za pomocą listenera
+sama klasa game nie powinna mieć żadnego doczynienia z grafiką, tylko manager będzie miał. zrobić tak
+wcisniecie strzalek rozpoczyna nową grę też
+UI: play button/restart button, score counter, tick slider
+nazywanie węża w ui i event do tego
+podwójne wywołanie gameOver() przy kolizji z ciałem

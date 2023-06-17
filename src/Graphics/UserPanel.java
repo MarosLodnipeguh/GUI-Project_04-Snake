@@ -63,7 +63,7 @@ public class UserPanel extends JPanel implements EventListener {
 
         startButton.addActionListener(e -> {
             if (fromGraphicsListener.getGameState() == true) {
-                gameOver(new ImpactEvent(this, 0, 0));
+                forceGameOver();
                 String name = GetSnakeName();
                 startGame(new NewGameEvent(this, name, tickValue, 25, 16));
             }
@@ -84,6 +84,8 @@ public class UserPanel extends JPanel implements EventListener {
 
 
     }
+
+
 
     private String GetSnakeName () {
         String text = JOptionPane.showInputDialog("Name your Snake: ");
@@ -132,7 +134,11 @@ public class UserPanel extends JPanel implements EventListener {
 
     @Override
     public void gameOver (ImpactEvent evt) {
-        fromGraphicsListener.gameOver(evt);
+
+    }
+
+    public void forceGameOver () {
+        fromGraphicsListener.forceGameOver();
     }
 
 }

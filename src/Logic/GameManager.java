@@ -17,24 +17,10 @@ public class GameManager implements EventListener, MovementListener {
     @Override
     public void startGame (NewGameEvent evt) {
 
-        this.game = new Game(this, evt.getTick(), evt.getBoardWidth(), evt.getBoardHeight());
+        this.game = new Game(this, evt.getPlayerName(), evt.getTick(), evt.getBoardWidth(), evt.getBoardHeight());
         Thread gameThread = new Thread(game, "GameThread");
         gameThread.start();
 
-//        if (game == null) {
-//
-//            this.game = new Game(this, evt.getTick(), evt.getBoardWidth(), evt.getBoardHeight());
-////            game.setMovementListener(fromGraphicsMovementListener);
-////            System.out.println("Game is now a listener of: " + fromGraphicsMovementListener.getClass());
-//
-//
-//            Thread gameThread = new Thread(game, "GameThread");
-//            gameThread.start();
-//
-//        }
-//        else {
-//            gameOver(null);
-//        }
     }
 
     @Override
@@ -44,19 +30,37 @@ public class GameManager implements EventListener, MovementListener {
 
     @Override
     public void changeTick (TickEvent evt) {
-        game.setTick(evt.getTick());
+        if (game != null) {
+            game.setTick(evt.getTick());
+        }
     }
 
     @Override
     public void gameOver (ImpactEvent evt) {
+        System.out.println("Game Over wywołanie");
         game.setRunning(false);
+
+        writeScoreToFile(evt.getPlayerName(), evt.getFinalScore());
+
         game = null;
+        System.out.println("Game Nulled");
     }
 
     @Override
-    public void startGameNoButton () {
+    public void forceGameOver () {
+        game.forceGameOver(); // -> gameOver()
+    }
+
+
+
+    public void writeScoreToFile (String playerName, int score) {
+
+        Scoreboard.addScore(playerName, score);
+        Scoreboard.displayScores();
 
     }
+
+
 
     @Override
     public void setDirection (Direction direction) {
@@ -64,7 +68,6 @@ public class GameManager implements EventListener, MovementListener {
             fromLogicEventListener.startGameNoButton();
         }
         game.setDirection(direction);
-        System.out.println("Direction set to: " + direction);
     }
 
     @Override
@@ -97,4 +100,12 @@ public class GameManager implements EventListener, MovementListener {
             return true;
         }
     }
+
+
+    @Override
+    public void startGameNoButton () {
+
+    }
+
+
 }

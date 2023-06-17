@@ -13,6 +13,8 @@ public interface EventListener {
     void startGameNoButton();               // Start game without Start button (by pressing movement key)
 
     boolean getGameState();
+
+    void forceGameOver ();                  // Force game over (by pressing New Game button)
     
     
     // scrapped:
