@@ -8,23 +8,21 @@ import java.util.List;
 public class Scoreboard {
 
     private static final int MAX_SCORES = 10;
-    private static final int MAX_NAME_LENGTH = 255;
     private static final String FILENAME = "src/Logic/scores.bin";
 
 
-
     public static void addScore(String playerName, int score) {
-        List<ScoreEntry> scores = loadScores();
-        scores.add(new ScoreEntry(playerName, score));
+        List<ScoreboardEntry> scores = readScores();
+        scores.add(new ScoreboardEntry(playerName, score));
         Collections.sort(scores);
         if (scores.size() > MAX_SCORES) {
-            scores = scores.subList(0, MAX_SCORES);
+            scores = scores.subList(0, MAX_SCORES); // returns only the 10 greatest scores
         }
-        saveScores(scores);
+        writeScores(scores);
     }
 
-    public static List<ScoreEntry> displayScores() {
-        List<ScoreEntry> scores = loadScores();
+    public static List<ScoreboardEntry> displayScores() {
+        List<ScoreboardEntry> scores = readScores();
         return scores;
 
 //        for (int i = 0; i < scores.size(); i++) {
@@ -33,62 +31,78 @@ public class Scoreboard {
 //        }
     }
 
-    private static List<ScoreEntry> loadScores() {
+    private static void writeScores (List<ScoreboardEntry> scores) {
 
-        List<ScoreEntry> scores = new ArrayList<>();
+        try (FileOutputStream fileOutputStream = new FileOutputStream(FILENAME)) {
+            for (ScoreboardEntry entry : scores) {
 
-        try (DataInputStream input = new DataInputStream(new FileInputStream(FILENAME))) {
-            while (input.available() > 0) {
-                int nameLength = input.readByte();
-                byte[] nameBytes = new byte[nameLength];
-                input.readFully(nameBytes);
-                String playerName = new String(nameBytes);
-                int score = input.readInt();
-                scores.add(new ScoreEntry(playerName, score));
-            }
-
-
-        } catch (IOException e) {
-            System.out.println("Error loading scores: " + e.getMessage());
-        }
-        return scores;
-    }
-
-    private static void saveScores(List<ScoreEntry> scores) {
-        try (DataOutputStream output = new DataOutputStream(new FileOutputStream(FILENAME))) {
-            for (ScoreEntry entry : scores) {
-
-                byte[] nameBytes = new byte[MAX_NAME_LENGTH];
-                int nameLength = 0;
-
+                int LEN;
 
                 if (entry.getPlayerName() != null) {
-                    nameBytes = entry.getPlayerName().getBytes();
-                    nameLength = Math.min(nameBytes.length, MAX_NAME_LENGTH);
+                    LEN = entry.getPlayerName().length();
+
+                    fileOutputStream.write((byte) LEN);
+                    fileOutputStream.write(entry.getPlayerName().getBytes());
                 }
                 else {
                     String nullName = "Unknown";
-                    nameBytes = nullName.getBytes();
-                    nameLength = Math.min(nameBytes.length, MAX_NAME_LENGTH);
+                    LEN = nullName.length();
+
+                    fileOutputStream.write((byte) LEN);
+                    fileOutputStream.write(nullName.getBytes());
                 }
 
-
-                output.writeByte(nameLength);
-                output.write(nameBytes, 0, nameLength);
-
-
-                output.writeInt(entry.getScore());
+                // 4 Bytes for points count
+                fileOutputStream.write((entry.getScore() >> 24) & 0xFF);
+                fileOutputStream.write((entry.getScore() >> 16) & 0xFF);
+                fileOutputStream.write((entry.getScore() >> 8) & 0xFF);
+                fileOutputStream.write(entry.getScore() & 0xFF);
             }
+
         } catch (IOException e) {
-            System.out.println("Error saving scores: " + e.getMessage());
+            System.out.println("Error writing scores to File: " + e.getMessage());
         }
+
     }
 
-    public static class ScoreEntry implements Comparable<ScoreEntry> {
+    private static List<ScoreboardEntry> readScores () {
+
+        List<ScoreboardEntry> scores = new ArrayList<>();
+
+        try (FileInputStream fileInputStream = new FileInputStream(FILENAME)) {
+
+            while (fileInputStream.available() > 0) {
+
+                int LEN = fileInputStream.read();
+
+                byte[] playerNameBytes = new byte[LEN];
+                fileInputStream.read(playerNameBytes); // reads as many bytes as the player's name
+                String playerName = new String(playerNameBytes); // new String from the bytes array
+
+                // 4 Bytes for points count
+                int points = 0;
+                points |= (fileInputStream.read() & 0xFF) << 24;
+                points |= (fileInputStream.read() & 0xFF) << 16;
+                points |= (fileInputStream.read() & 0xFF) << 8;
+                points |= fileInputStream.read() & 0xFF;
+
+                scores.add(new ScoreboardEntry(playerName, points));
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error reading scores from File: " + e.getMessage());
+        }
+
+        return scores;
+
+    }
+
+
+    public static class ScoreboardEntry implements Comparable<ScoreboardEntry> {
         private String playerName;
         private int score;
 
-        public ScoreEntry(String playerName, int score) {
+        public ScoreboardEntry (String playerName, int score) {
             this.playerName = playerName;
             this.score = score;
         }
@@ -102,7 +116,7 @@ public class Scoreboard {
         }
 
         @Override
-        public int compareTo(ScoreEntry other) {
+        public int compareTo(ScoreboardEntry other) {
             return Integer.compare(other.score, this.score); // Sort in descending order
         }
     }

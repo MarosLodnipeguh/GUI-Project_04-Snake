@@ -39,9 +39,9 @@ public class Game extends Thread {
         generateFood();
         generateFood();
         generateFood();
-//        generateFood();
-//        generateFood();
-//        generateFood();
+        generateFood();
+        generateFood();
+        generateFood();
 
         running = true;
 
@@ -139,15 +139,6 @@ public class Game extends Thread {
             }
         }
 
-//        if (x[0] == foodY && y[0] == foodX) {
-//            System.out.println("EAT");
-//            bodyParts++;
-//            manager.updateScore(new ConsumptionEvent(this, bodyParts));
-//            generateFood();
-//            generateFood();
-//            generateFood();
-//        }
-
     }
 
 
@@ -158,24 +149,6 @@ public class Game extends Thread {
                 manager.gameOver(new ImpactEvent(this, x[0], y[0], snakeName, bodyParts+1));
             }
         }
-
-//        if (y[0] < 0) {
-//            running = false;
-//        }
-//
-//        if (y[0] >= board.length-1) {
-//            System.out.println("BORDER");
-//            running = false;
-//        }
-//
-//        if (x[0] < 0) {
-//            running = false;
-//        }
-//
-//        if (x[0] >= board[0].length-1) {
-//            running = false;
-//        }
-
 
     }
 

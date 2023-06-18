@@ -9,7 +9,6 @@ public class TickEvent extends EventObject {
     public TickEvent (Object source, int tick) {
         super(source);
         this.tick = tick;
-        System.out.println("Tick changed to: " + tick);
     }
 
     public int getTick () {

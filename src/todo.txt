@@ -10,14 +10,7 @@ czy da sie odpalic logike bez grafiki i na odwrót?
 
 move KeyListener do MainFrame?
 
-SCOREBOARD + PLIK
-
-UI: game over screen with scoreboard
-
-
-
-
-przy uderzeniu w sciane od razu pokazuje sie okienko setName
+przy uderzeniu w sciane od razu pokazuje sie okienko setName???
 
 
 
@@ -33,3 +26,6 @@ wcisniecie strzalek rozpoczyna nową grę też
 UI: play button/restart button, score counter, tick slider
 nazywanie węża w ui i event do tego
 podwójne wywołanie gameOver() przy kolizji z ciałem
+SCOREBOARD + PLIK
+UI: game over screen with scoreboard
+

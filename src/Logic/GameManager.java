@@ -8,14 +8,8 @@ import java.util.List;
 public class GameManager implements EventListener, MovementListener {
 
     private Game game;
-
-    private EventListener fromLogicEventListener; // (słuchaczem jest UserPanel)
-    private MovementListener fromLogicMovementListener; // (słuchaczem jest MainFrame)
-
-// USELESS:
-    private EventListener fromGraphicsEventListener;
-    private MovementListener fromGraphicsMovementListener; // (słuchaczem jest Manager)
-
+    private MovementListener movementListener; // (słuchaczem jest MainFrame)
+    private EventListener eventListener; // (słuchaczem jest UserPanel)
 
     @Override
     public void startGame (NewGameEvent evt) {
@@ -29,7 +23,7 @@ public class GameManager implements EventListener, MovementListener {
 
     @Override
     public void updateScore (ConsumptionEvent evt) {
-        fromLogicEventListener.updateScore(evt);
+        eventListener.updateScore(evt);
     }
 
     @Override
@@ -41,7 +35,6 @@ public class GameManager implements EventListener, MovementListener {
 
     @Override
     public void gameOver (ImpactEvent evt) {
-        System.out.println("Game Over wywołanie");
         game.setRunning(false);
 
         writeScoreToFile(evt.getPlayerName(), evt.getFinalScore());
@@ -59,13 +52,13 @@ public class GameManager implements EventListener, MovementListener {
     }
 
     @Override
-    public void showScoreboard (List<Scoreboard.ScoreEntry> scores) {
-        fromLogicMovementListener.showScoreboard(scores);
+    public void showScoreboard (List<Scoreboard.ScoreboardEntry> scores) {
+        movementListener.showScoreboard(scores);
     }
 
     @Override
     public void showGameboard () {
-        fromLogicMovementListener.showGameboard();
+        movementListener.showGameboard();
     }
 
     @Override
@@ -82,33 +75,26 @@ public class GameManager implements EventListener, MovementListener {
     @Override
     public void setDirection (Direction direction) {
         if (game == null) {
-            fromLogicEventListener.startGameNoButton();
+            eventListener.startGameNoButton();
         }
         game.setDirection(direction);
     }
 
     @Override
     public void fillGameboard (int[][] board) {
-        fromLogicMovementListener.fillGameboard(board);
+        movementListener.fillGameboard(board);
     }
 
 
 
-    public void setFromLogicEventListener (EventListener fromLogicEventListener) {
-        this.fromLogicEventListener = fromLogicEventListener;
+    public void setEventListener (EventListener fromLogicEventListener) {
+        this.eventListener = fromLogicEventListener;
     }
 
-    public void setFromGraphicsEventListener (EventListener fromGraphicsEventListener) {
-        this.fromGraphicsEventListener = fromGraphicsEventListener;
+    public void setMovementListener (MovementListener fromLogicMovementListener) {
+        this.movementListener = fromLogicMovementListener;
     }
 
-    public void setFromLogicMovementListener(MovementListener fromLogicMovementListener) {
-        this.fromLogicMovementListener = fromLogicMovementListener;
-    }
-
-    public void setFromGraphicsMovementListener(MovementListener fromGraphicsMovementListener) {
-        this.fromGraphicsMovementListener = fromGraphicsMovementListener;
-    }
 
     @Override
     public boolean getGameState () {

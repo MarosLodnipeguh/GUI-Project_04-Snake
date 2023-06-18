@@ -12,7 +12,7 @@ public interface MovementListener {
 
     // GameManager -> MainFrame
     void fillGameboard (int[][] board);
-    void showScoreboard (List<Scoreboard.ScoreEntry> scores);
+    void showScoreboard (List<Scoreboard.ScoreboardEntry> scores);
     void showGameboard();
 
 }

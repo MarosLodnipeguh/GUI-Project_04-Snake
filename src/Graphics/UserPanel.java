@@ -18,7 +18,7 @@ public class UserPanel extends JPanel implements EventListener {
     private int score;
     private int tickValue;
 
-    private EventListener fromGraphicsListener;
+    private EventListener eventListener;
 
     public UserPanel () {
         this.tickValue = 5;
@@ -51,14 +51,14 @@ public class UserPanel extends JPanel implements EventListener {
                 tickValue = source.getValue();
                 tickLabel.setText("Ticks per second: " + tickValue);
 
-                fromGraphicsListener.changeTick(new TickEvent(this, tickValue));
+                eventListener.changeTick(new TickEvent(this, tickValue));
             }
         });
         // ===================================== NEW GAME BUTTON ===================================== //
         startButton = new JButton("New game");
 
         startButton.addActionListener(e -> {
-            if (fromGraphicsListener.getGameState() == true) {
+            if (eventListener.getGameState() == true) {
                 forceGameOver();
                 String name = GetSnakeName();
                 startGame(new NewGameEvent(this, name, tickValue, 25, 16));
@@ -105,17 +105,17 @@ public class UserPanel extends JPanel implements EventListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawString("Score: " + score, 70, 80);
+        g.setFont(new Font("Dialog", Font.TYPE1_FONT, 12));
+        g.drawString("Score: " + score, 250, 100);
     }
 
-    public void setFromGraphicsListener (EventListener fromGraphicsListener) {
-        this.fromGraphicsListener = fromGraphicsListener;
-        System.out.println("UserPanel: Logic listener set" + fromGraphicsListener.getClass());
+    public void setEventListener (EventListener eventListener) {
+        this.eventListener = eventListener;
     }
 
     @Override
     public void startGame (NewGameEvent evt) {
-        fromGraphicsListener.startGame(evt);
+        eventListener.startGame(evt);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class UserPanel extends JPanel implements EventListener {
     }
 
     public void forceGameOver () {
-        fromGraphicsListener.forceGameOver();
+        eventListener.forceGameOver();
     }
 
 }

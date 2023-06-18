@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.List;
 
 
-public class MainFrame extends JFrame implements /*KeyListener,*/ MovementListener {
+public class MainFrame extends JFrame implements MovementListener {
 
     private GamePanel gamePanel;
     private UserPanel userPanel;
@@ -29,7 +29,6 @@ public class MainFrame extends JFrame implements /*KeyListener,*/ MovementListen
         getContentPane().add(gamePanel, BorderLayout.NORTH);
         getContentPane().add(userPanel, BorderLayout.SOUTH);
 
-//        addKeyListener(this);
 
         pack();
         setVisible(true);
@@ -45,7 +44,7 @@ public class MainFrame extends JFrame implements /*KeyListener,*/ MovementListen
     }
 
     @Override
-    public void showScoreboard (List<Scoreboard.ScoreEntry> scores) {
+    public void showScoreboard (List<Scoreboard.ScoreboardEntry> scores) {
         gamePanel.showScoreboard(scores);
         pack();
         repaint();
@@ -69,45 +68,7 @@ public class MainFrame extends JFrame implements /*KeyListener,*/ MovementListen
 
     public void setMovementListener (MovementListener movementListener) {
         this.movementListener = movementListener;
-//        System.out.println("MainFrame MovementListener set to: " + movementListener.getClass());
     }
-
-//    public void setEventListener (EventListener eventListener) {
-//        this.eventListener = eventListener;
-//    }
-
-    //    @Override
-//    public void keyPressed (KeyEvent e) {
-//        switch (e.getKeyCode()) {
-//            case KeyEvent.VK_UP -> {
-//                System.out.println("UP");
-//                movementListener.setDirection(Direction.UP); // -> GameManager
-//            }
-//            case KeyEvent.VK_DOWN -> {
-//                System.out.println("DOWN");
-//                movementListener.setDirection(Direction.DOWN);
-//            }
-//            case KeyEvent.VK_LEFT -> {
-//                System.out.println("LEFT");
-//                movementListener.setDirection(Direction.LEFT);
-//            }
-//            case KeyEvent.VK_RIGHT -> {
-//                System.out.println("RIGHT");
-//                movementListener.setDirection(Direction.RIGHT);
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void keyTyped (KeyEvent e) {
-//
-//    }
-//
-//    @Override
-//    public void keyReleased (KeyEvent e) {
-//
-//    }
-
 
     public UserPanel getUserPanel () {
         return userPanel;

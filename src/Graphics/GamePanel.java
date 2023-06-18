@@ -38,15 +38,15 @@ public class GamePanel extends JPanel {
         add(tableScrollPane, BorderLayout.NORTH);
     }
 
-    public void showScoreboard (List<Scoreboard.ScoreEntry> scores) {
+    public void showScoreboard (List<Scoreboard.ScoreboardEntry> scores) {
         remove(tableScrollPane);
 
         scorePanel = new JPanel(new GridLayout(0, 1));
-        scorePanel.setPreferredSize(new Dimension(100, 350));
+        scorePanel.setPreferredSize(new Dimension(200, 350));
 
         scorePanel.add(new JLabel("TOP 10 SNAKES: \n"));
         for (int i = 0; i < scores.size(); i++) {
-            Scoreboard.ScoreEntry entry = scores.get(i);
+            Scoreboard.ScoreboardEntry entry = scores.get(i);
             String labelText = (i + 1) + ". " + entry.getPlayerName() + " - " + entry.getScore();
             scorePanel.add(new JLabel(labelText));
         }
