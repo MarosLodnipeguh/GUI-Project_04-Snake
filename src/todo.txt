@@ -12,7 +12,7 @@ move KeyListener do MainFrame?
 
 SCOREBOARD + PLIK
 
-UI: game over screen
+UI: game over screen with scoreboard
 
 
 

@@ -4,8 +4,6 @@ import java.util.EventObject;
 
 public class NewGameEvent extends EventObject {
 
-    // po wciśnięciu przycisku start w ui
-
     private String playerName;
 
     private int tick;

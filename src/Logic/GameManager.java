@@ -3,19 +3,23 @@ package Logic;
 import Enums.Direction;
 import Handlers.*;
 
+import java.util.List;
+
 public class GameManager implements EventListener, MovementListener {
 
     private Game game;
 
-    private EventListener fromLogicEventListener;
-    private EventListener fromGraphicsEventListener;
-
+    private EventListener fromLogicEventListener; // (słuchaczem jest UserPanel)
     private MovementListener fromLogicMovementListener; // (słuchaczem jest MainFrame)
+
+// USELESS:
+    private EventListener fromGraphicsEventListener;
     private MovementListener fromGraphicsMovementListener; // (słuchaczem jest Manager)
 
 
     @Override
     public void startGame (NewGameEvent evt) {
+        showGameboard();
 
         this.game = new Game(this, evt.getPlayerName(), evt.getTick(), evt.getBoardWidth(), evt.getBoardHeight());
         Thread gameThread = new Thread(game, "GameThread");
@@ -46,6 +50,24 @@ public class GameManager implements EventListener, MovementListener {
         System.out.println("Game Nulled");
     }
 
+    public void writeScoreToFile (String playerName, int score) {
+
+        Scoreboard.addScore(playerName, score);
+//        Scoreboard.displayScores();
+        showScoreboard(Scoreboard.displayScores());
+
+    }
+
+    @Override
+    public void showScoreboard (List<Scoreboard.ScoreEntry> scores) {
+        fromLogicMovementListener.showScoreboard(scores);
+    }
+
+    @Override
+    public void showGameboard () {
+        fromLogicMovementListener.showGameboard();
+    }
+
     @Override
     public void forceGameOver () {
         game.forceGameOver(); // -> gameOver()
@@ -53,12 +75,7 @@ public class GameManager implements EventListener, MovementListener {
 
 
 
-    public void writeScoreToFile (String playerName, int score) {
 
-        Scoreboard.addScore(playerName, score);
-        Scoreboard.displayScores();
-
-    }
 
 
 
@@ -71,9 +88,11 @@ public class GameManager implements EventListener, MovementListener {
     }
 
     @Override
-    public void fillGraphics (int[][] board) {
-        fromLogicMovementListener.fillGraphics(board);
+    public void fillGameboard (int[][] board) {
+        fromLogicMovementListener.fillGameboard(board);
     }
+
+
 
     public void setFromLogicEventListener (EventListener fromLogicEventListener) {
         this.fromLogicEventListener = fromLogicEventListener;

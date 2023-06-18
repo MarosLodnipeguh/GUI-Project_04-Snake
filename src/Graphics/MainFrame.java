@@ -1,45 +1,35 @@
 package Graphics;
 
-import Handlers.EventListener;
-import Handlers.MovementListener;
 import Enums.Direction;
+import Handlers.MovementListener;
+import Logic.Scoreboard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 
 public class MainFrame extends JFrame implements /*KeyListener,*/ MovementListener {
 
-    private JPanel mainPanel;
-    private JScrollPane scrollPane;
-    private Table table;
+    private GamePanel gamePanel;
     private UserPanel userPanel;
 
     private MovementListener movementListener;
-    private EventListener eventListener;
 
     public MainFrame (int boardWidth, int boardHeight) {
+
+        setPreferredSize(new Dimension(600, 600));
         setTitle("Graphics");
-//        setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
 
-        table = new Table(boardHeight, boardWidth);
-        scrollPane = new JScrollPane(table);
-        this.getContentPane().add(scrollPane, BorderLayout.NORTH);
-
+        gamePanel = new GamePanel(boardWidth, boardHeight);
         userPanel = new UserPanel();
 
-        this.getContentPane().add(userPanel, BorderLayout.SOUTH);
+        getContentPane().add(gamePanel, BorderLayout.NORTH);
+        getContentPane().add(userPanel, BorderLayout.SOUTH);
 
 //        addKeyListener(this);
-
-//        userPanel.setFocusable(false);
-//        scrollPane.setFocusable(false);
-//        table.setFocusable(false);
-
-//        requestFocus();
-
 
         pack();
         setVisible(true);
@@ -47,23 +37,30 @@ public class MainFrame extends JFrame implements /*KeyListener,*/ MovementListen
     }
 
     @Override
-    public void fillGraphics (int[][] board) {
+    public void showGameboard() {
+        gamePanel.showGameboard();
+        pack();
+        repaint();
+        revalidate();
+    }
+
+    @Override
+    public void showScoreboard (List<Scoreboard.ScoreEntry> scores) {
+        gamePanel.showScoreboard(scores);
+        pack();
+        repaint();
+        revalidate();
+    }
+
+    @Override
+    public void fillGameboard (int[][] board) {
+        gamePanel.fillGameboard(board);
         requestFocus();
-
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-
-                switch (board[i][j]) {
-                    case 0 -> table.setValueAt(Color.WHITE, i, j); //empty
-                    case 1 -> table.setValueAt(Color.GREEN, i, j); //head
-                    case 2 -> table.setValueAt(Color.GRAY, i, j); //body
-                    case 3 -> table.setValueAt(Color.RED, i, j); //fruit
-                }
-
-            }
-        }
         repaint();
     }
+
+
+
 
     @Override
     public void setDirection (Direction direction) {
@@ -75,15 +72,11 @@ public class MainFrame extends JFrame implements /*KeyListener,*/ MovementListen
 //        System.out.println("MainFrame MovementListener set to: " + movementListener.getClass());
     }
 
-    public void setEventListener (EventListener eventListener) {
-        this.eventListener = eventListener;
-    }
+//    public void setEventListener (EventListener eventListener) {
+//        this.eventListener = eventListener;
+//    }
 
-    public void setUserPanelListener (EventListener eventListener) {
-        this.userPanel.setFromGraphicsListener(eventListener);
-    }
-
-//    @Override
+    //    @Override
 //    public void keyPressed (KeyEvent e) {
 //        switch (e.getKeyCode()) {
 //            case KeyEvent.VK_UP -> {

@@ -1,10 +1,18 @@
 package Handlers;
 
 import Enums.Direction;
+import Logic.Scoreboard;
+
+import java.util.List;
 
 public interface MovementListener {
 
-    void setDirection(Direction direction); // Graphics -> Logic
+    // MainFrame -> GameManager
+    void setDirection(Direction direction);
 
-    void fillGraphics (int[][] board);      // Logic -> Graphics
+    // GameManager -> MainFrame
+    void fillGameboard (int[][] board);
+    void showScoreboard (List<Scoreboard.ScoreEntry> scores);
+    void showGameboard();
+
 }

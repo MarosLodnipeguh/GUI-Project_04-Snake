@@ -2,19 +2,20 @@ package Handlers;
 
 public interface EventListener {
 
-    void startGame(NewGameEvent evt);       // UserPanel -> GameManager
+    // GameManager -> UserPanel:
+    void updateScore(ConsumptionEvent evt);
+    void startGameNoButton();                   // Start game without Start button (by pressing movement key)
 
-    void updateScore(ConsumptionEvent evt); // GameManager -> UserPanel
 
-    void changeTick(TickEvent evt);         // UserPanel -> GameManager
+    // Game -> GameManager:
+    void gameOver(ImpactEvent evt);
 
-    void gameOver(ImpactEvent evt);         // GameManager -> MainFrame (dodać jakiś game over scree?)
 
-    void startGameNoButton();               // Start game without Start button (by pressing movement key)
-
-    boolean getGameState();
-
-    void forceGameOver ();                  // Force game over (by pressing New Game button)
+    // UserPanel -> GameManager:
+    void changeTick(TickEvent evt);
+    void startGame(NewGameEvent evt);
+    boolean getGameState();                    // Get game state (running or not)
+    void forceGameOver();                      // Force game over (by pressing New Game button)
     
     
     // scrapped:

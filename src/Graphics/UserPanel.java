@@ -21,10 +21,6 @@ public class UserPanel extends JPanel implements EventListener {
     private EventListener fromGraphicsListener;
 
     public UserPanel () {
-        this.startButton = startButton;
-        this.tickSlider = tickSlider;
-        this.score = score;
-        this.fromGraphicsListener = fromGraphicsListener;
         this.tickValue = 5;
 
         setPreferredSize(new Dimension(210, 160));
@@ -33,7 +29,7 @@ public class UserPanel extends JPanel implements EventListener {
         // ===================================== TICK SLIDER ===================================== //
         tickLabel = new JLabel("Ticks per second: ");
 
-        tickSlider = new JSlider(1, 15, 5);
+        tickSlider = new JSlider(1, 15, tickValue);
         tickSlider.setMajorTickSpacing(10); // Ustawienie większych kroków
         tickSlider.setMinorTickSpacing(1); // Ustawienie mniejszych kroków
         tickSlider.setPaintTicks(true);

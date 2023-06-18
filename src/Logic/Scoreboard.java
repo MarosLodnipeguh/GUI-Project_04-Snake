@@ -23,12 +23,14 @@ public class Scoreboard {
         saveScores(scores);
     }
 
-    public static void displayScores() {
+    public static List<ScoreEntry> displayScores() {
         List<ScoreEntry> scores = loadScores();
-        for (int i = 0; i < scores.size(); i++) {
-            ScoreEntry entry = scores.get(i);
-            System.out.println((i + 1) + ". " + entry.getPlayerName() + " - " + entry.getScore());
-        }
+        return scores;
+
+//        for (int i = 0; i < scores.size(); i++) {
+//            ScoreEntry entry = scores.get(i);
+//            System.out.println((i + 1) + ". " + entry.getPlayerName() + " - " + entry.getScore());
+//        }
     }
 
     private static List<ScoreEntry> loadScores() {
@@ -82,7 +84,7 @@ public class Scoreboard {
         }
     }
 
-    private static class ScoreEntry implements Comparable<ScoreEntry> {
+    public static class ScoreEntry implements Comparable<ScoreEntry> {
         private String playerName;
         private int score;
 

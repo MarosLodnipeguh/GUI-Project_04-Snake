@@ -21,9 +21,6 @@ public class MainApp {
 
         SwingUtilities.invokeLater(() -> {
 
-
-//            Game game = new Game(tick, boardWidth, boardHeight);
-
             GameManager manager = new GameManager();
 
             MainFrame graphics = new MainFrame(boardWidth, boardHeight);
@@ -33,13 +30,12 @@ public class MainApp {
 
 
             graphics.setMovementListener(manager);
-            graphics.setEventListener(manager);
+//            graphics.setEventListener(manager);
 
 //            graphics.setUserPanelListener(manager);
             graphics.getUserPanel().setFromGraphicsListener(manager);
 
             manager.setFromGraphicsEventListener(graphics.getUserPanel());
-
             manager.setFromLogicEventListener(graphics.getUserPanel());
 
             manager.setFromGraphicsMovementListener(graphics);
@@ -77,9 +73,6 @@ public class MainApp {
 
 //            Thread logicThread = new Thread(logic);
 //            logicThread.start();
-
-            // co sie zmieniło? i tak thread startuje dopiero po utworzeniu wsystkich obiektow i przypisania listenerow
-            // wczesniej tylko obiekt klasy Game był tworzony jako pierwszy
 
 
         });

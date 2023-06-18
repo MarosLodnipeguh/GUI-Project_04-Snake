@@ -9,7 +9,7 @@ public class ImpactEvent extends EventObject {
     private int finalScore;
     private String playerName;
 
-    public ImpactEvent (Object source, int x, int y,String playerName, int finalScore) {
+    public ImpactEvent (Object source, int x, int y, String playerName, int finalScore) {
         super(source);
         this.x = x;
         this.y = y;

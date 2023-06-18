@@ -133,7 +133,7 @@ public class Game extends Thread {
         for (int i = 0; i < foodPositions.size(); i++) {
             if (x[0] == foodPositions.get(i).height && y[0] == foodPositions.get(i).width) {
                 bodyParts++;
-                manager.updateScore(new ConsumptionEvent(this, bodyParts));
+                manager.updateScore(new ConsumptionEvent(this, bodyParts+1));
                 foodPositions.remove(i);
                 generateFood();
             }
@@ -197,7 +197,7 @@ public class Game extends Thread {
 
 
     public void fillGraphics (int[][] board) {
-        manager.fillGraphics(board);
+        manager.fillGameboard(board);
     }
 
     public void generateHead() {
